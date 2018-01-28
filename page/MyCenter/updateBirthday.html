@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			.mui-switch.mui-active:before {
+				content: '是';
+			}
+			
+			.mui-switch:before {
+				content: '否';
+				color: #FFFFFF;
+			}
+			
+			.mui-switch {
+				background-color: #FF5053;
+				border: 1px solid #FF5053;
+				margin-bottom: 5px;
+			}
+			
+			.free {
+				display: inline-block;
+				margin-top: 4px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 0px;
+				width: 100px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 15px;
+			}
+			
+			.Add {
+				text-align: center;
+			}
+			
+			.pd {
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+			
+			.free1 {
+				display: inline-block;
+				float: right;
+				color: #4CD964
+			}
+			
+			.free0 {
+				display: inline-block;
+				float: right;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">出生日期</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="save();">保存</button>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+				
+				<li class="mui-table-view-cell mui-media pd">
+					<a href="#">
+						<div class="mui-media-body">
+							<span></span>
+							<span id='result1'></span>
+							<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block mui-pull-right">选择</button>
+						</div>
+					</a>
+				</li>
+				
+			</ul>
+		</div>
+
+		<div id='result' class="ui-alert"></div>
+	</body>
+	<!--日期选择-->
+	<script src="../../js/mui.picker.min.js"></script>
+	<script>
+		(function($) {
+			$.init();
+			var result = $('#result1')[0];
+			var btns = $('#demo1');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var id = this.getAttribute('id');
+					/*
+					 * 首次显示时实例化组件
+					 * 示例为了简洁，将 options 放在了按钮的 dom 上
+					 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+					 */
+					var picker = new $.DtPicker({
+						"type":"date"
+					});
+					picker.show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						result.innerText = rs.text;
+					});
+				}, false);
+			});
+		})(mui);
+	</script>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+<script type="text/javascript">
+		mui.init();
+		document.getElementById("result1").innerHTML = localStorage.birthday;
+		function save() {
+			var birthday = document.getElementById("result1").innerHTML;
+			mui.ajax(ajaxUrl + '/doctor_updateBirthday.action?birthday=' + birthday + '&id=' + localStorage.doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					mui.openWindow({
+						url:'Myself-details.html',
+						id:'Myself-details.html',
+					});
+					plus.webview.getWebviewById('Myself-details.html').reload();
+				}
+			});
+		}
+	</script>
+
+</html>

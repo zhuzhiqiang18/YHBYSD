@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style>
+			.mui-ellipsis {
+				color: #6D6D72;
+			}
+			
+			.touxiang {
+				border-radius: 40px;
+			}
+			
+			.DoctorDetails_name {
+				font-size: 17px;
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.DoctorDetails_title1 {
+				font-size: 14px;
+				display: block;
+				color: #8f8f94;
+				margin-top: 5px;
+			}
+			
+			.DoctorDetails_title2 {
+				font-size: 13px;
+				display: inline-block;
+				color: #8f8f94;
+				margin-top: 3px;
+				border: 1px solid #6D6D72;
+				border-radius: 15px;
+				padding-left: 1px;
+				padding-right: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+			<h1 class="mui-title">个人中心</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<ul class="mui-table-view mui-table-view-chevron" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media" style="height: 130px;padding-top: 20px;" onclick="clicked('Myself-details.html',true);">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left touxiang" src="" style="height: 80px;max-width:80px;" id="imgPath">
+						<div class="mui-media-body">
+							<span class="DoctorDetails_name" id="username"></span>
+							<span class="DoctorDetails_title1" id="usercode"></span>
+						</div>
+					</a>
+				</li>
+			</ul>
+
+			<!--<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" id="Myself-Money">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>730个健康点，4个未完成任务</p>
+						</div>
+					</a>
+				</li>
+			</ul>-->
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<!--<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="MedicalRecords">
+					<a class="mui-navigate-right" >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>帮助</p>
+						</div>
+					</a>
+				</li>
+
+			</ul>-->
+		</div>
+		<div class="mui-content-padded">
+			<a id='outLogin' class="mui-btn mui-btn-block mui-btn-danger" onclick="reLogin();">退出登录</a>
+		</div>
+		<script type="text/javascript">
+//			document.getElementById('takeMedicine').addEventListener('tap', function() {
+//				//打开关于页面
+//				mui.openWindow({
+//					url: '../takeMedicine/List.html',
+//					id: 'List.html',
+//				});
+//			});
+//			document.getElementById('sputumExamination').addEventListener('tap', function() {
+//				//打开关于页面
+//				mui.openWindow({
+//					url: '../sputumExamination/List.html',
+//					id: 'HealthyTest',
+//				});
+//			});
+
+//			document.getElementById('medicalHistory').addEventListener('tap', function() {
+//				//打开关于页面
+//				mui.openWindow({
+//					url: '../medicalHistory/medicalHistory.html',
+//					id: 'medicalHistory.html',
+//				});
+//			});
+//			document.getElementById('MedicalRecords').addEventListener('tap', function() {
+//			  					 //打开关于页面
+//			 			 		mui.openWindow({
+//			    				url: '../MedicalRecords/List.html', 
+//			    				id:'List.html',
+//			  				});
+//						});
+			/*退出登录*/
+			function reLogin() {
+				mui.openWindow({
+					url: '../Other/ReLogin.html',
+					id: 'ReLogin',
+				});
+			}
+		</script>
+
+		<!--ajax-->
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+			document.getElementById('username').innerHTML = localStorage.doctorName;
+			document.getElementById('usercode').innerHTML = localStorage.userName;
+//			document.getElementById('usercode').innerHTML = localStorage.code;
+			document.getElementById("imgPath").src = localStorage.doctorImgPath;
+			/*mui.ajax(ajaxUrl+'/patientClientApp/osPatientAction_findMySelf.action?user='+localStorage.patientid,{
+				
+				dataType:'json',
+				type:'get',
+				success:function(data)
+				{
+					//用户头像
+					document.getElementById('photo').setAttribute('src','../../images/cbd.jpg');
+					document.getElementById('username').innerHTML=data[0][1];
+					document.getElementById('usercode').innerHTML=data[0][2];
+					document.getElementById('num').innerHTML=(data[0][4]+data[0][5])+'关注';
+					document.getElementById('numlabel').innerHTML=(data[0][4]);
+					document.getElementById('numdoctor').innerHTML=(data[0][5]);
+					var a=data[0][6].split('<splite key=label>');
+					if(a.length>1)
+					{
+						document.getElementById('label1').innerHTML='#'+a[0].split('|,|')[0]+'#';
+						document.getElementById('label2').innerHTML='#'+a[1].split('|,|')[0]+'#';
+					}
+					else
+					{
+						document.getElementById('label1').innerHTML='#'+data[0][6].split('|,|')[0]+'#';
+					}
+					a=data[0][7].split('<splite key=label>');
+					if(a.length>1)
+					{
+						document.getElementById('doctor1').innerHTML=a[0].split('|,|')[0];
+						document.getElementById('doctor2').innerHTML=a[1].split('|,|')[0];
+					}
+					else
+					{
+						document.getElementById('doctor1').innerHTML=data[0][6].split('|,|')[0];
+					}
+				}
+			});*/
+			function test_() {
+				console.log("OK");
+			}
+		</script>
+		<!--下拉刷新-->
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					document.getElementById('username').innerHTML = localStorage.doctorName;
+					document.getElementById('usercode').innerHTML = localStorage.userName;
+					document.getElementById("imgPath").src = localStorage.doctorImgPath;
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 300);
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+					document.getElementById('username').innerHTML = localStorage.doctorName;
+					document.getElementById('usercode').innerHTML = localStorage.userName;
+					document.getElementById("imgPath").src = localStorage.doctorImgPath;
+
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 10);
+
+				});
+			}
+		</script>
+	</body>
+
+</html>

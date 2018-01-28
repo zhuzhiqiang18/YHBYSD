@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			.mui-switch.mui-active:before {
+				content: '是';
+			}
+			
+			.mui-switch:before {
+				content: '否';
+				color: #FFFFFF;
+			}
+			
+			.mui-switch {
+				background-color: #FF5053;
+				border: 1px solid #FF5053;
+				margin-bottom: 5px;
+			}
+			
+			.free {
+				display: inline-block;
+				margin-top: 4px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 0px;
+				width: 100px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 15px;
+			}
+			
+			.Add {
+				text-align: center;
+			}
+			
+			.pd {
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+			
+			.free1 {
+				display: inline-block;
+				float: right;
+				color: #4CD964
+			}
+			
+			.free0 {
+				display: inline-block;
+				float: right;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">单位（学校）</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="save();">保存</button>
+		</header>
+		<div class="mui-content">
+
+			<div class="mui-input-row">
+				<input id='jobAddress' type="text" class="mui-input-clear mui-input" required="required">
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+	<script type="text/javascript" src="../../js/common.js"></script>
+	<script type="text/javascript">
+		mui.init();
+		document.getElementById("jobAddress").value = localStorage.jobAddress;
+		function save() {
+			var jobAddress = document.getElementById("jobAddress").value;
+			mui.ajax(ajaxUrl + '/patientAPP/patientAPP_updateJobAddress.action?jobAddress=' + jobAddress + '&id=' + localStorage.patientId, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					mui.openWindow({
+						url:'Myself-details.html',
+						id:'Myself-details.html',
+					});
+					plus.webview.getWebviewById('Myself-details.html').reload();
+				}
+			});
+		}
+	</script>
+
+</html>

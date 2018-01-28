@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-icon mui-icon-bars mui-pull-left menua"></a>
+			<a class="mui-icon mui-icon-plus mui-pull-right adda"></a>
+			<h1 class="mui-title">慢性病管理患者端</h1>
+		</header>
+		
+			<script type="text/javascript" charset="utf-8">
+			var showMenu = false;
+			mui.init({
+				subpages: [{
+					id: 'list',
+					url: 'page/Nav.html',
+					styles: {
+						top: '0px',
+						bottom: 0,
+						bounce: 'vertical'
+					}
+				}]
+			});
+			 //首页返回键处理
+			 //处理逻辑：1秒内，连续两次按返回键，则退出应用；
+			var first = null;
+			mui.back = function() {
+				if (showMenu) {
+					closeMenu();
+				} else {
+					//首次按键，提示‘再按一次退出应用’
+					if (!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1000);
+					} else {
+						if (new Date().getTime() - first < 1000) {
+							plus.runtime.quit();
+						}
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>

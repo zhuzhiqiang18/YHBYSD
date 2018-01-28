@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">服药记录</h1>
+			<a class="mui-icon mui-icon-plusempty mui-pull-right" id="Upload"></a>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<ul class="mui-table-view" id="listUl">
+				<!--<li class="mui-table-view-cell mui-media">
+					<a href="UploadDetails.html">
+						<img class="mui-pull-left" src="../../images/cbd.jpg" style="height: 50px;width: 70px;padding-right: 10px;">
+						<div class="mui-media-body">
+							冬天多吃这些好
+							<p class='mui-ellipsis'>冬天多吃这些好，真的，不骗你哟</p>
+							<span style="float:right;font-size: 12px;display: inline-block;line-height:13px;color: #8f8f94;">人气：<span style="color: skyblue;">8888</span></span>
+						</div>
+					</a>
+				</li>-->
+
+			</ul>
+		</div>
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script>
+			/*console.log("进入");
+						mui.ajax(ajaxUrl + '/patientAPP/takeMedicine_getPageList.action?id=' + localStorage.patientId + '&flag='+1, {
+							dataType: 'json', //服务器返回json格式数据
+							type: 'post', //HTTP请求类型
+							success: function(data) {
+								if(data.length == 0) //数据为空时什么都不执行  
+								{
+									console.log("无数据");
+								} else {
+									var str = "";
+									var obj=document.getElementById("listUl");
+									for(var i = 0; i < data.length; i++) {
+										str +=
+											"<li class=\"mui-table-view-cell mui-media\"><a href=\"#\"><img class=\"mui-pull-left\" src=\""+takeMedicineImgPath+data[i][2]+"\" style=\"height: 50px;width: 70px;padding-right: 10px;\">" +
+											"<div class=\"mui-media-body\"><p class='mui-ellipsis'>"+data[i][1]+"</p>" +
+											"<span style=\"float:right;font-size: 12px;display: inline-block;line-height:13px;color: #8f8f94;\">时间：<span style=\"color: skyblue;\">"+data[i][3]+"</span></span>" +
+											"</div></a></li>";
+									}
+									obj.innerHTML=obj.innerHTML+str;
+								}
+							}
+						});*/
+			document.getElementById('Upload').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'Upload.html',
+					id: 'Upload',
+				});
+			});
+		</script>
+		<!--服药记录下拉刷新-->
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					++count;
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					mui.ajax(ajaxUrl + '/patientAPP/takeMedicine_getPageList.action?id=' + localStorage.patientId + '&flag=' + count, {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+								plus.nativeUI.toast("没有更多数据了！", {
+									duration: "short"
+								});
+							} else {
+								var str = "";
+								var obj = document.getElementById("listUl");
+								for(var i = 0; i < data.length; i++) {
+									/*var li= document.createElement("li");
+									li.setAttribute('class','mui-table-view-cell mui-media');
+									var a =document.createElement("a");
+									a.setAttribute('class','mui-navigate-right')
+									a.setAttribute('href',"UploadDetails.html");
+									var img = document.createElement("img");
+									img.setAttribute('class','mui-media-object mui-pull-left touxiang');
+									img.setAttribute('src',takeMedicineImgPath+data[i][1]);
+									var div = document.createElement("div");
+									div.setAttribute('class','mui-media-body');
+									var p = document.createElement("p");
+									p.setAttribute("class","mui-ellipsis");
+									p.innerText=data[i][0];
+									var span = document.createElement("span");
+									span.setAttribute("style","float:right;font-size: 12px;display: inline-block;line-height:13px;color: #8f8f94;");
+									span.innerHTML='时间：';
+									var span1 = document.createElement("span");
+									span1.setAttribute("style","color: skyblue;");
+									span1.innerHTML=data[i][2];
+									li.appendChild(a);
+									a.appendChild(img);
+									a.appendChild(div);
+									div.appendChild(p);
+									div.appendChild(span);
+									span.appendChild(span1);
+							
+									document.getElementById('listUl').appendChild(li);*/
+									str +=
+										"<li class=\"mui-table-view-cell mui-media\"><a onclick=\"details('"+data[i][0]+"','"+takeMedicineImgPath+data[i][1]+"','"+data[i][2]+"','"+data[i][3]+"')\"><img class=\"mui-pull-left\" src=\"../../images/start.png\" style=\"height: 50px;width: 70px;padding-right: 10px;\">" +
+										"<div class=\"mui-media-body\"><p class='mui-ellipsis'>" + data[i][0] + "</p>" +
+										"<span style=\"float:right;font-size: 12px;display: inline-block;line-height:13px;color: #8f8f94;\">时间：<span style=\"color: skyblue;\">" + data[i][2] + "</span></span>" +
+										"</div></a></li>";
+								}
+								obj.innerHTML = obj.innerHTML + str;
+							}
+						}
+					});
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+			function details(tackMedicine,tackMedicineImg,tackMedicineTime,tackMedicineAddress) {
+				mui.openWindow({
+					url: 'UploadDetails.html',
+					id: 'UploadDetails.html',
+					extras: {
+						tackMedicine:tackMedicine,
+						tackMedicineImg:tackMedicineImg,
+						tackMedicineTime:tackMedicineTime,
+						tackMedicineAddress:tackMedicineAddress
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style>
+			.mui-ellipsis {
+				color: #6D6D72;
+			}
+			
+			.touxiang {
+				border-radius: 40px;
+			}
+			
+			.DoctorDetails_name {
+				font-size: 17px;
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.DoctorDetails_title1 {
+				font-size: 14px;
+				display: block;
+				color: #8f8f94;
+				margin-top: 5px;
+			}
+			
+			.DoctorDetails_title2 {
+				font-size: 13px;
+				display: inline-block;
+				color: #8f8f94;
+				margin-top: 3px;
+				border: 1px solid #6D6D72;
+				border-radius: 15px;
+				padding-left: 1px;
+				padding-right: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的资料</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media" style="height: 70px;padding-top: 10px;" onclick="showActionSheet();">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left touxiang" src="" id="imgPath" style="height: 50px;max-width:50px;">
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" id="qr">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>我的二维码</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+
+			<!--<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" id="Myself-Money">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>730个健康点，4个未完成任务</p>
+						</div>
+					</a>
+				</li>
+			</ul>-->
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="name">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="nameText">姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="sex">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="sexText">性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="nation">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="nationText">民族&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="dateOfBirth">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="dateOfBirthText">出生日期&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="phone">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="phoneText">手机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<!--<li class="mui-table-view-cell mui-media" id="nation">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="nationText">民族&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>-->
+				<!--<li class="mui-table-view-cell mui-media" id="job">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="jobText">职业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>-->
+				<li class="mui-table-view-cell mui-media" id="chscs">
+					<!--<a class="mui-navigate-right">-->
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="chscsText">单位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					<!--</a>-->
+				</li>
+				<li class="mui-table-view-cell mui-media" id="jobAddress">
+					<!--<a class="mui-navigate-right">-->
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="jobAddressText">单位地址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						<!--</div>-->
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="duty">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="dutyText">职务&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="updatePassword">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>修改登录密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			document.getElementById('name').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updateName.html',
+					id: 'updateName.html',
+				});
+			});
+			document.getElementById('dateOfBirth').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updateBirthday.html',
+					id: 'updateBirthday.html',
+				});
+			});
+			document.getElementById('sex').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updateSex.html',
+					id: 'updateSex.html',
+				});
+			});
+			document.getElementById('qr').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'Myself-QRCode.html',
+					id: 'Myself-QRCode.html',
+				});
+			});
+			document.getElementById('phone').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updatePhone.html',
+					id: 'updatePhone.html',
+				});
+			});
+			document.getElementById('nation').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updateNation.html',
+					id: 'updateNation.html',
+				});
+			});
+
+			document.getElementById('duty').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updateduty.html',
+					id: 'updateduty.html',
+				});
+			});
+//			document.getElementById('jobAddress').addEventListener('tap', function() {
+//				//打开关于页面
+//				mui.openWindow({
+//					url: 'updateJobAddress.html',
+//					id: 'updateJobAddress.html',
+//				});
+//			});
+			document.getElementById('updatePassword').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'updatePassword.html',
+					id: 'updatePassword.html',
+				});
+			});
+		</script>
+
+		<!--ajax-->
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+			mui.ajax(ajaxUrl + '/doctor_login.action?username=' + localStorage.userName + '&psw=' + localStorage.passWord, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						plus.nativeUI.toast("服务器异常！", {
+							duration: "short"
+						});
+					} else {
+						/*保存登录者信息*/
+						localStorage.doctorID = data[0][0]; //id
+						document.getElementById("nameText").innerHTML = '姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][1];
+						localStorage.doctorName = data[0][1]; //姓名
+						document.getElementById("sexText").innerHTML = '性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][5];
+						localStorage.doctorSex = data[0][5]; //性别
+						document.getElementById("dateOfBirthText").innerHTML = '生日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][7];
+						localStorage.dateOfBirth = data[0][7]; //生日
+						document.getElementById("phoneText").innerHTML = '手机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][6];
+						localStorage.MobilePhoneNO = data[0][6]; //手机号
+						document.getElementById("nationText").innerHTML = '民族&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][8];
+						localStorage.nation = data[0][8]; //民族
+						document.getElementById("jobAddressText").innerHTML = '单位地址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][12];
+						localStorage.chscAddress = data[0][12]; //地址
+						
+						document.getElementById("chscsText").innerHTML = '单位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][11];
+						localStorage.chscs = data[0][11]; //单位
+						document.getElementById("dutyText").innerHTML = '职务&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][9];
+						localStorage.duty = data[0][9]; //职务
+						
+						var fe = document.getElementById("imgPath");
+						fe.src = imgPath + data[0][4];
+						localStorage.doctorImgPath = imgPath + data[0][4];
+
+						/**
+						 * 账号 密码
+						 */
+						localStorage.userName = data[0][2];
+						localStorage.passWord = data[0][3];
+
+					}
+				}
+			});
+		</script>
+
+		<!--上传文件-->
+
+		<script type="text/javascript">
+			var server = ajaxUrl + '/doctor_uploadImg.action?id=' + localStorage.doctorID;
+			var files = [];
+			// 上传文件
+			function upload() {
+				if(files.length <= 0) {
+					plus.nativeUI.alert("没有添加上传文件！");
+					return;
+				}
+				var wt = plus.nativeUI.showWaiting();
+				var task = plus.uploader.createUpload(server, {
+						method: "POST"
+					},
+					function(t, status) { //上传完成
+						if(status == 200) {
+							plus.nativeUI.toast("修改成功！", {
+								duration: "short"
+							});
+							wt.close();
+						} else {
+							plus.nativeUI.toast("修改失败！", {
+								duration: "short"
+							});
+							wt.close();
+						}
+					}
+				);
+				for(var i = 0; i < files.length; i++) {
+					var f = files[i];
+					task.addFile(f.path, {
+						key: f.name
+					});
+				}
+				task.start();
+			}
+			// 拍照添加文件
+			function appendByCamera() {
+
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						/*start*/
+						var IMAGE_UNSPECIFIED = "image/*";
+						var PHOTOZOOM = 2; // 获取完图片返回key
+						var PHOTOLAT = 1; // 剪裁完毕后返回key
+						var main = plus.android.runtimeMainActivity();
+						var Intent = plus.android.importClass("android.content.Intent");
+						var MediaStore = plus.android.importClass("android.provider.MediaStore");
+						var File = plus.android.importClass("java.io.File");
+						var Uri = plus.android.importClass("android.net.Uri");
+						var intent = new Intent(Intent.ACTION_PICK, null);
+						var outPutPath = plus.io.convertLocalFileSystemURL("_www/5566.jpg");
+						var file = new File(outPutPath);
+						// 输出目录uri
+						var outPutUri = Uri.fromFile(file);
+						//拍照回来的绝对路径
+						var path = entry.toLocalURL();
+						//去掉\\或者file://
+						path = path.replace("\\", "");
+						path = path.replace("file://", "");
+						var _file = new File(path);
+						var a = _file.exists();
+						//                      alert(a);
+						//绝对路径转uri
+						var curCropUri = Uri.fromFile(new File(path));
+						console.log("uri:" + curCropUri);
+						//裁切
+						var cropIntent = new Intent("com.android.camera.action.CROP");
+						cropIntent.setDataAndType(curCropUri, IMAGE_UNSPECIFIED);
+						// 截图完毕后 输出目录
+						cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
+						cropIntent.putExtra("crop", "true");
+						// aspectX aspectY 是宽高的比例
+						cropIntent.putExtra("aspectX", 1);
+						cropIntent.putExtra("aspectY", 1);
+						// outputX outputY 是裁剪图片宽高
+						cropIntent.putExtra("outputX", 100);
+						cropIntent.putExtra("outputY", 100);
+						cropIntent.putExtra("return-data", true);
+						main.startActivityForResult(cropIntent, 1);
+						main.onActivityResult = function(requestCode, resultCode, data) {
+							//裁剪成功图片上传
+							//                          upload(outPutPath);
+							//                                      // 判断 剪裁完后的图片输出是否存在
+							var _file2 = new File(outPutPath);
+							console.log(outPutPath);
+							var a2 = _file2.exists();
+							//                                          alert(a2);
+							if(a2) {
+								appendFile(outPutPath);
+							} else {
+								console.log("上次失败");
+							}
+						};
+						/*end*/
+					}, function(e) {
+
+					});
+				}, function(e) {
+
+				}, {
+					filename: "_doc/camera/",
+					index: 1
+				});
+			}
+			// 从相册添加文件
+			function appendByGallery() {
+				shear();
+				//plus.gallery.pick(function(p) {
+				//appendFile(outPutPath);
+				//});
+			}
+			// 添加文件
+			var index = 1;
+
+			function appendFile(p) {
+//				console.log(p);
+				/**/
+				var fe = document.getElementById("imgPath");
+				fe.src = p;
+				localStorage.patientImgPath = p;
+				files.push({
+					name: "upload",
+					path: p
+				});
+				upload();
+			}
+			// 产生一个随机数
+			function getUid() {
+				return Math.floor(Math.random() * 100000000 + 10000000).toString();
+			}
+			/*弹出菜单*/
+			function showActionSheet() {
+				var bts = [{
+					title: "拍照"
+				}, {
+					title: "相册"
+				}];
+				plus.nativeUI.actionSheet({
+						title: "修改头像",
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						var result = (e.index > 0) ? bts[e.index - 1].title : "取消";
+						if(result == '拍照') {
+							appendByCamera();
+						} else if(result == '相册') {
+							appendByGallery();
+						}
+					}
+				);
+			}
+
+			function shear() {
+				/*剪切图片*/
+				var IMAGE_UNSPECIFIED = "image/*";
+				var PHOTOZOOM = 2; // 获取完图片返回key
+				var PHOTOLAT = 1; // 剪裁完毕后返回key
+				var main = plus.android.runtimeMainActivity();
+				var Intent = plus.android.importClass("android.content.Intent");
+				var MediaStore = plus.android.importClass("android.provider.MediaStore");
+				var File = plus.android.importClass("java.io.File");
+				var Uri = plus.android.importClass("android.net.Uri");
+				var intent = new Intent(Intent.ACTION_PICK, null);
+				intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_UNSPECIFIED);
+				main.startActivityForResult(intent, PHOTOZOOM);
+				var outPutPath = plus.io.convertLocalFileSystemURL("_www/5566.jpg");
+				main.onActivityResult = function(requestCode, resultCode, data) {
+					if(PHOTOZOOM == requestCode) {
+
+						var file = new File(outPutPath);
+						// 输出目录uri
+						var outPutUri = Uri.fromFile(file);
+						plus.android.importClass(data);
+						var uri = data.getData();
+						var cropIntent = new Intent("com.android.camera.action.CROP");
+						cropIntent.setDataAndType(uri, IMAGE_UNSPECIFIED);
+						// 截图完毕后 输出目录
+						cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
+						cropIntent.putExtra("crop", "true");
+						// aspectX aspectY 是宽高的比例
+						cropIntent.putExtra("aspectX", 1);
+						cropIntent.putExtra("aspectY", 1);
+						// outputX outputY 是裁剪图片宽高
+						cropIntent.putExtra("outputX", 100);
+						cropIntent.putExtra("outputY", 100);
+						cropIntent.putExtra("return-data", true);
+						main.startActivityForResult(cropIntent, PHOTOLAT);
+						console.log("1");
+					} else if(requestCode == PHOTOLAT) {
+						// 判断 剪裁完后的图片输出是否存在
+						console.log("2");
+						//console.log(outPutPath);
+						var file = new File(outPutPath);
+						var a = file.exists();
+						if(a) {
+							appendFile(outPutPath);
+						}
+
+						// console.log(a);
+					}
+				};
+
+			}
+		</script>
+	</body>
+
+</html>

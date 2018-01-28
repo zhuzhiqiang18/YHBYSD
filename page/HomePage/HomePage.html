@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/style.css" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.mui-grid-view.mui-grid-9 {
+				background-color: white;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				height: 42px;
+				padding: 0px;
+				margin: 0px;
+				line-height: 0px;
+			}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				margin-top: 4px;
+			}
+			
+			.img2 {
+				max-width: 100%;
+				margin-top: 7px;
+			}
+			
+			.main-doctor {
+				font-family: "微软雅黑";
+				font-size: 13px;
+				display: block;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.main-doctor-number {
+				font-family: "微软雅黑";
+				font-size: 10px;
+				display: block;
+				line-height: 15px;
+				color: #8f8f94;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">首页</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+
+			<ul class="mui-table-view" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<p class='mui-ellipsis'>快捷功能</p>
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media" id="MySchedule-BeInClinic">
+					<a class='mui-navigate-right' href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="../../img/self_item_symptoms_icon.png">
+						<div class="mui-media-body">
+							坐诊管理
+							<p class='mui-ellipsis' id="BeInClinicPlan">今日无坐诊安排</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="MySputumPatient">
+					<a class='mui-navigate-right' href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="../../img/icon_ehr_tool_heart_rate.png">
+						<div class="mui-media-body">
+							预约查痰
+							<p class='mui-ellipsis' id="querySputumToday">今日预约查痰人数：0</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="MyReexaminationPatient">
+					<a class="mui-navigate-right">
+						<img class="mui-media-object mui-pull-left" src="../../img/jkq_rmtz.png">
+						<div class="mui-media-body">
+							预约复查
+							<p class='mui-ellipsis' id="queryreexaminationToday">今日预约复查人数：0</p>
+						</div>
+					</a>
+				</li>
+
+				<li class="mui-table-view-cell mui-media" id="MyMedicinePatient">
+					<a class='mui-navigate-right' href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="../../img/self_item_drug_icon.png">
+						<div class="mui-media-body">
+							患者已服药管理
+							<p class='mui-ellipsis' id="gettakeMedicineAllTodayByDoctor">今日已服药人数：0</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="MyMedicineNoPatient">
+					<a class='mui-navigate-right' href="javascript:;">
+						<img class="mui-media-object mui-pull-left" src="../../img/sy_my_icon.png">
+						<div class="mui-media-body">
+							患者漏服药管理
+							<p class='mui-ellipsis' id="gettakeMedicineNoAllTodayByDoctor">今日未服药人数：0</p>
+						</div>
+					</a>
+				</li>
+
+			</ul>
+
+		</div>
+	</body>
+	<script type="text/javascript" charset="utf-8">
+		document.getElementById('MyReexaminationPatient').addEventListener('tap', function() {
+			//打开关于页面
+			mui.openWindow({
+				url: '../MyPatient/MyReexaminationPatient.html',
+				id: 'MyReexaminationPatient.html',
+			});
+		});
+
+		document.getElementById('MySchedule-BeInClinic').addEventListener('tap', function() {
+			//打开关于页面
+			mui.openWindow({
+				url: '../MySchedule/MySchedule-BeInClinic.html',
+				id: 'MySchedule-BeInClinic',
+			});
+		});
+
+		document.getElementById('MyMedicinePatient').addEventListener('tap', function() {
+			//打开关于页面
+			mui.openWindow({
+				url: '../MyPatient/MyMedicinePatient.html',
+				id: 'MyMedicinePatient.html',
+			});
+		});
+
+		document.getElementById('MySputumPatient').addEventListener('tap', function() {
+			//打开关于页面
+			mui.openWindow({
+				url: '../MyPatient/MySputumPatient.html',
+				id: 'MySputumPatient.html',
+			});
+		});
+		document.getElementById('MyMedicineNoPatient').addEventListener('tap', function() {
+			//打开关于页面
+			mui.openWindow({
+				url: '../MyPatient/MyMedicineNoPatient.html',
+				id: 'MyMedicineNoPatient.html',
+			});
+		});
+	</script>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+	<script type="text/javascript">
+		var doctorID = localStorage.doctorID;
+		mui.plusReady(function() {
+			/*获取用户CID*/
+			var info = plus.push.getClientInfo();
+			mui.ajax(ajaxUrl + '/doctor_updateCid.action?id=' + doctorID + '&cid=' + info.clientid, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {}
+			});
+			var count = 1;
+			mui.ajax(ajaxUrl + '/schedule_getBeInClinicFromMobile.action?doctorID=' + doctorID + '&flag=' + count, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{} else {
+						/*保存登录者信息*/
+						document.getElementById("BeInClinicPlan").innerHTML = '今日有坐诊安排';
+
+					}
+				}
+			});
+			//		预约查痰TOday
+			mui.ajax(ajaxUrl + '/myPatient_querySputumToday.action?doctorID=' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{} else {
+						/*保存登录者信息*/
+						document.getElementById("querySputumToday").innerHTML = '今日预约查痰人数：' + data[0];
+
+					}
+				}
+			});
+			//		预约复查TOday
+			mui.ajax(ajaxUrl + '/myPatient_queryreexaminationToday.action?doctorID=' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{} else {
+						/*保存登录者信息*/
+						document.getElementById("queryreexaminationToday").innerHTML = '今日预约复查人数：' + data[0];
+
+					}
+				}
+			});
+			//		服药记录TOday
+			mui.ajax(ajaxUrl + '/myPatient_gettakeMedicineAllTodayByDoctor.action?doctorID=' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{} else {
+						/*保存登录者信息*/
+						document.getElementById("gettakeMedicineAllTodayByDoctor").innerHTML = '今日已服药人数：' + data[0];
+
+					}
+				}
+			});
+			//		未服药记录TOday
+			mui.ajax(ajaxUrl + '/myPatient_gettakeMedicineNoAllTodayByDoctor.action?doctorID=' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{} else {
+						/*保存登录者信息*/
+						document.getElementById("gettakeMedicineNoAllTodayByDoctor").innerHTML = '今日未服药人数：' + data[0];
+
+					}
+				}
+			});
+			plus.push.addEventListener("receive", function(msg) {
+				//alert("进入receive");
+				var data = JSON.parse(msg.payload);
+				if(data.type == '0') {
+					mui.openWindow({
+						url: '../Other/push.html',
+						id: 'push.html',
+						extras: {
+							title: data.title,
+							content: data.content
+						}
+					});
+				} else {
+					//聊天
+					localStorage.patientID = data.id;
+					localStorage.patientName = data.patientName;
+					localStorage.patientImgPath = data.pathImg;
+					mui.openWindow({
+						url: '../Chat/ChatDetail.html',
+						id: 'push.html'
+					});
+
+				}
+			});
+			plus.push.addEventListener("click", function(msg) {
+				//alert("进入receive");
+				var data = JSON.parse(msg.payload);
+				if(data.type == '0') {
+					mui.openWindow({
+						url: '../Other/push.html',
+						id: 'push.html',
+						extras: {
+							title: data.title,
+							content: data.content
+						}
+					});
+				} else {
+					//聊天
+					localStorage.patientID = data.id;
+					localStorage.patientName = data.patientName;
+					localStorage.patientImgPath = data.pathImg;
+					mui.openWindow({
+						url: '../Chat/ChatDetail.html',
+						id: 'push.html'
+					});
+
+				}
+			});
+
+		});
+	</script>
+	<script type="text/javascript">
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+			}
+		});
+		/**
+		 * 下拉刷新具体业务实现
+		 */
+		var doctorID = localStorage.doctorID;
+
+		function pulldownRefresh() {
+			setTimeout(function() {
+				var count = 1;
+				mui.ajax(ajaxUrl + '/schedule_getBeInClinicFromMobile.action?doctorID=' + doctorID + '&flag=' + count, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{} else {
+							/*保存登录者信息*/
+							document.getElementById("BeInClinicPlan").innerHTML = '今日有坐诊安排';
+
+						}
+					}
+				});
+				//		预约查痰TOday
+				mui.ajax(ajaxUrl + '/myPatient_querySputumToday.action?doctorID=' + doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{} else {
+							/*保存登录者信息*/
+							document.getElementById("querySputumToday").innerHTML = '今日预约查痰人数：' + data[0];
+
+						}
+					}
+				});
+				//		预约复查TOday
+				mui.ajax(ajaxUrl + '/myPatient_queryreexaminationToday.action?doctorID=' + doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{} else {
+							/*保存登录者信息*/
+							document.getElementById("queryreexaminationToday").innerHTML = '今日预约复查人数：' + data[0];
+
+						}
+					}
+				});
+				//		服药记录TOday
+				mui.ajax(ajaxUrl + '/myPatient_gettakeMedicineAllTodayByDoctor.action?doctorID=' + doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{} else {
+							/*保存登录者信息*/
+							document.getElementById("gettakeMedicineAllTodayByDoctor").innerHTML = '今日已服药人数：' + data[0];
+
+						}
+					}
+				});
+				//		未服药记录TOday
+				mui.ajax(ajaxUrl + '/myPatient_gettakeMedicineNoAllTodayByDoctor.action?doctorID=' + doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{} else {
+							/*保存登录者信息*/
+							document.getElementById("gettakeMedicineNoAllTodayByDoctor").innerHTML = '今日未服药人数：' + data[0];
+
+						}
+					}
+				});
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			}, 300);
+		}
+
+		if(mui.os.plus) {
+			mui.plusReady(function() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				}, 10);
+
+			});
+		}
+	</script>
+
+</html>

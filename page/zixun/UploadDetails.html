@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.touxiang {
+				border-radius: 30px;
+			}
+			
+			ul li {
+				border: 0;
+			}
+			
+			.border .mui-table-view:before {
+				content: none;
+			}
+			
+			.border .mui-table-view:after {
+				content: none;
+			}
+			
+			.border .mui-table-view-cell:after {
+				content: none;
+			}
+			
+			.UploadDetails_name {
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+			}
+			
+			.UploadDetails_title {
+				font-size: 12px;
+				display: block;
+				line-height: 13px;
+				color: #8f8f94;
+			}
+			
+			.UploadDetails_time {
+				font-size: 12px;
+				display: inline-block;
+				line-height: 20px;
+				color: #8f8f94;
+			}
+			
+			.UploadDetails_column {
+				font-size: 12px;
+				display: inline-block;
+				line-height: 20px;
+				color: cornflowerblue;
+			}
+			
+			.UploadDetails_name2 {
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+				padding-left: 2px;
+			}
+			
+			.UploadDetails_time2 {
+				font-size: 12px;
+				display: block;
+				line-height: 18px;
+				color: #8f8f94;
+			}
+			
+			.UploadDetails_body2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-left: 2px;
+			}
+			
+			.div_pl {
+				height: 20px;
+				width: 120px;
+				float: right;
+				position: absolute;
+				right: 0;
+				bottom: 9px;
+			}
+			
+			.div_pl img {
+				max-width: 15px;
+			}
+			
+			.HealthyCircle_pl {
+				font-size: 13px;
+				padding-bottom: 1px;
+			}
+			
+			.huifu_table {
+				width: 100%;
+				height: 40px;
+				display: block;
+				overflow: hidden;
+			}
+			
+			.huifu_table_td1 {
+				width: 100%;
+				height: 35px;
+				padding-left: 5px;
+			}
+			
+			.huifu_table_td2 {
+				width: 70px;
+				height: 40px;
+				padding-left: 5px;
+				padding-right: 5px;
+				padding-bottom: 15px;
+			}
+			
+			.huifu {
+				width: 50%;
+				height: 40px;
+			}
+			
+			.hfbt {
+				width: 60px;
+				height: 39px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">帖子详情</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<ul class="mui-table-view  border" style="margin-top: 0;">
+				<li>
+					<table class="huifu_table">
+						<tr>
+							<td class="huifu_table_td1">
+								<input type="text" id="huifu" value="" placeholder="我也说一句" class="huifu" />
+							</td>
+							<td class="huifu_table_td2">
+								<input type="submit"  value="回复" class="hfbt"  onclick="huifu_();"/>
+							</td>
+						</tr>
+					</table>
+				</li>
+				<li>
+					<br />
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="HealthyCircle-HotInformation">
+					<div class="mui-media-body">
+						<p class='mui-ellipsis' >评论<span id="hf">(10)</span></p>
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin-top: 0;" id="Ul">
+				<!--<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/cbd.jpg" style="height: 32px;max-width:32px;">
+						<div class="mui-media-body">
+							<span class="UploadDetails_name2">Ellis</span>
+							<span class="UploadDetails_time2">16:28</span>
+							<span class="UploadDetails_body2">好</span>
+						</div>
+					</a>
+				</li>-->
+			</ul>
+
+		</div>
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+		document.getElementById("hf").innerHTML="("+localStorage.hf+")";
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+
+				//mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					++count;
+					mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_seeComment.action?id=' + localStorage.tieziId + '&flag=' + count, {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+								plus.nativeUI.toast("没有更新内容！", {
+									duration: "short"
+								});
+							} else {
+								var str = "";
+								var obj = document.getElementById("Ul");
+								for(var i = 0; i < data.length; i++) {
+									if(data[i][2]==1){
+									str += "<li class=\"mui-table-view-cell mui-media\">" +
+										"					<a href=\"#\">" +
+										"						<img class=\"mui-media-object mui-pull-left touxiang\" src=\""+imgPath+data[i][4]+"\" style=\"height: 32px;max-width:32px;\">" +
+										"						<div class=\"mui-media-body\">" +
+										"							<span class=\"UploadDetails_name2\">"+data[i][3]+"(医生)</span>" +
+										"							<span class=\"UploadDetails_time2\">"+data[i][1]+"</span>" +
+										"							<span class=\"UploadDetails_body2\">"+data[i][0]+"</span>" +
+										"						</div>" +
+										"					</a>" +
+										"				</li>";
+									}else{
+										str += "<li class=\"mui-table-view-cell mui-media\">" +
+										"					<a href=\"#\">" +
+										"						<img class=\"mui-media-object mui-pull-left touxiang\" src=\""+imgPath+data[i][4]+"\" style=\"height: 32px;max-width:32px;\">" +
+										"						<div class=\"mui-media-body\">" +
+										"							<span class=\"UploadDetails_name2\">"+data[i][3]+"</span>" +
+										"							<span class=\"UploadDetails_time2\">"+data[i][1]+"</span>" +
+										"							<span class=\"UploadDetails_body2\">"+data[i][0]+"</span>" +
+										"						</div>" +
+										"					</a>" +
+										"				</li>";
+									}
+								}
+								obj.innerHTML += str;
+							}
+						}
+					});
+
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+			
+			function huifu_(){
+				var context=document.getElementById("huifu").value;
+				if(context==''){
+					plus.nativeUI.toast("写句话吧！", {
+									duration: "short"
+								});
+				}else{
+					mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_commentDoctor.action?id=' + localStorage.tieziId + '&patientId=' + localStorage.doctorID+'&content='+context+'&category=1', {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								plus.nativeUI.toast("服务器异常，请稍后重试！", {
+									duration: "short"
+								});
+							} else {
+								var str = "<li class=\"mui-table-view-cell mui-media\">" +
+										"					<a href=\"#\">" +
+										"						<img class=\"mui-media-object mui-pull-left touxiang\" src=\""+localStorage.doctorImgPath+"\" style=\"height: 32px;max-width:32px;\">" +
+										"						<div class=\"mui-media-body\">" +
+										"							<span class=\"UploadDetails_name2\">"+localStorage.doctorName+"（医生）</span>" +
+										"							<span class=\"UploadDetails_time2\">"+new Date().Format("yyyy-MM-dd hh:mm:ss")+"</span>" +
+										"							<span class=\"UploadDetails_body2\">"+document.getElementById("huifu").value+"</span>" +
+										"						</div>" +
+										"					</a>" +
+										"				</li>";
+									var obj = document.getElementById("Ul");
+									obj.innerHTML=str+obj.innerHTML;
+									document.getElementById("huifu").value='';
+									document.getElementById("hf").innerHTML="("+(Number(localStorage.hf)+1)+")";
+							}
+						}
+					});
+				}
+				
+			}
+			/*时间格式化*/
+			Date.prototype.Format = function(fmt) { //author: meizz 
+					var o = {
+						"M+": this.getMonth() + 1, //月份 
+						"d+": this.getDate(), //日 
+						"h+": this.getHours(), //小时 
+						"m+": this.getMinutes(), //分 
+						"s+": this.getSeconds(), //秒 
+						"q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+						"S": this.getMilliseconds() //毫秒 
+					};
+					if(/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+					for(var k in o)
+						if(new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+					return fmt;
+				}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+			var longitude_ = null; //经度
+			var latitude_ = null; //纬度
+			var location_ = null; //拍摄地点
+			function getGeocode() {
+				var addressObj = document.getElementById("address");
+				addressObj.innerHTML = "地点：" + localStorage.address;
+				document.getElementById("latitude").value = localStorage.latitude;
+				document.getElementById("longitude").value = localStorage.longitude;
+			}
+			/**
+			 * 上传照片
+			 */
+			var server = ajaxUrl + '/patientAPP/takeMedicine_directionsMedicine.action?id=' + localStorage.patientId;
+			var files = [];
+			// 上传文件
+			function upload() {
+				if(files.length <= 0) {
+					plus.nativeUI.alert("没有添加上传文件！");
+					return;
+				}
+				var wt = plus.nativeUI.showWaiting();
+				var task = plus.uploader.createUpload(server, {
+						method: "POST"
+					},
+					function(t, status) { //上传完成
+						if(status == 200) {
+							plus.nativeUI.toast("上传成功！", {
+								duration: "short"
+							});
+							wt.close();
+							mui.openWindow({
+								url: 'List.html',
+								id: 'List.html',
+							});
+							plus.webview.getWebviewById('List.html').reload();
+						} else {
+							plus.nativeUI.toast("上传失败！", {
+								duration: "short"
+							});
+							wt.close();
+						}
+					}
+				);
+				var takeMedicine = document.getElementById("textarea").value;
+				task.addData("takeMedicine", takeMedicine);
+				task.addData("location", localStorage.address);
+				for(var i = 0; i < files.length; i++) {
+					var f = files[i];
+					task.addFile(f.path, {
+						key: f.name
+					});
+				}
+				task.start();
+			}
+			// 拍照添加文件
+			function appendByCamera() {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						appendFile('http://localhost:13131/' + p);
+					}, function(e) {
+
+					});
+				}, function(e) {
+
+				}, {
+					filename: "_doc/camera/",
+					index: 1
+				});
+			}
+			// 从相册添加文件
+			function appendByGallery() {
+				plus.gallery.pick(function(p) {
+					appendFile(p);
+				});
+			}
+			// 添加文件
+			var index = 1;
+
+			function appendFile(p) {
+				var fe = document.getElementById("img");
+				fe.src = "../../images/start.png";
+				files.push({
+					name: "upload",
+					path: p
+				});
+			}
+
+			function getVideo() {
+			
+				var cmr = plus.camera.getCamera();
+				cmr.startVideoCapture(function(p) {
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						//createItem(entry);
+						appendFile(p);
+					}, function(e) {
+							plus.nativeUI.toast("录像文件获取失败！",{duration:"long"});
+						console.log("读取录像文件错误：" + e.message);
+					});
+					
+				}, function(e) {
+					console.log("失败");
+					plus.nativeUI.toast("录像失败！",{duration:"long"});
+				}, {
+					filename: "_doc/camera/",
+					index: 2
+				});
+			}
+			
+			
+			// 摄像
+/*function getVideo(){
+	cmr = plus.camera.getCamera();
+	var res = cmr.supportedVideoResolutions[0];
+	var fmt = cmr.supportedVideoFormats[0];
+	console.log("Resolution: "+res+", Format: "+fmt);
+	cmr.startVideoCapture( function( path ){
+			alert( "Capture video success: " + path );  
+		},
+		function( error ) {
+			alert( "Capture video failed: " + error.message );
+		},
+		{resolution:res,format:fmt}
+	);
+	// 拍摄10s后自动完成 
+	setTimeout( stopCapture, 10000 );
+}
+// 停止摄像
+function stopCapture(){
+	console.log("stopCapture");
+	cmr.stopVideoCapture();
+}*/
+		</script>
+		<style type="text/css">
+			.Upload_btn {
+				border: 0;
+				margin-top: -18px;
+			}
+			
+			.Upload_img {
+				height: 70px;
+			}
+			
+			.Upload_border {
+				border: 0;
+				margin-top: 10px;
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">上传服药记录</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="upload();">发布</button>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="margin-top: 0px;">
+				<li class="mui-table-view-cell mui-media">
+					<textarea id="textarea" rows="5" placeholder="输入内容" class="Upload_border"></textarea>
+					<button class="Upload_btn" onclick="getVideo();"><img src="../../images/iconfont-tianjia.png" class="Upload_img" id="img"/></button>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media" onclick="getGeocode();">
+					<div class="mui-media-body">
+						<span class="AskPerson" id="address">地址:点击获取</span>
+						<input type="hidden" id="latitude" />
+						<input type="hidden" id="longitude" />
+					</div>
+				</li>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			/**
+			 * 获取当前位置
+			 * @param {Object} position
+			 */
+		</script>
+	</body>
+
+</html>

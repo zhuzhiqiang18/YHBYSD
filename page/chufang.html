@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../js/mui.min.js"></script>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.pd{text-align: center;padding-bottom: 5px;padding-top: 7px;background-color: #1B9ADE;color: #FFFFFF;font-weight:bold;}
+			#ipt{border: 0;margin: 0;padding: 0;height: 21px;}
+			.pd2{text-align: center;padding-bottom: 5px;padding-top: 7px;background-color: #19C8AD;color: #FFFFFF;font-weight:bold;}
+			.tjyp{text-align: center;padding-bottom: 7px;padding-top: 7px;color: #ff7850;font-size: 15px;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">开处方</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media pd">
+							患者信息
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+							<span class="AskPerson">昵称：</span>
+							<input type="text" value="Ellis" id="ipt">
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<div class="mui-media-body">
+							<span class="AskPerson">性别：</span> 
+							<input type="text" value="男" id="ipt">
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+						<div class="mui-media-body">
+							<span class="AskPerson">年龄：</span> 
+							<input type="text" value="19" id="ipt">
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+							<span class="AskPerson">过敏史：</span>
+							<input type="text" placeholder="例如：青霉素"id="ipt">
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a href="#">
+							<span class="AskPerson">临床诊断：</span>
+							<input type="text" placeholder="例如：慢性咽炎"id="ipt">
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media pd2">
+							药品明细
+				</li>
+				<li class="mui-table-view-cell mui-media tjyp">
+							<a href="#">添加药品</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media">
+					阿莫西林
+					<span style="color: #797979;">× 3.0盒</span>  
+					<span style="color: #797979;display: block;font-size: 15px;">规格：30g</span>
+					<span style="color: #797979;display: block;font-size: 15px;">用法用量：</span>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					阿莫西林
+					<span style="color: #797979;">× 3.0盒</span>  
+					<span style="color: #797979;display: block;font-size: 15px;">规格：30g</span>
+					<span style="color: #797979;display: block;font-size: 15px;">用法用量：</span>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					阿莫西林
+					<span style="color: #797979;">× 3.0盒</span>  
+					<span style="color: #797979;display: block;font-size: 15px;">规格：30g</span>
+					<span style="color: #797979;display: block;font-size: 15px;">用法用量：</span>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

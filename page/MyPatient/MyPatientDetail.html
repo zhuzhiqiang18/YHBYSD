@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.img2 {
+				max-width: 100%;
+				margin-top: 7px;
+			}
+			
+			.main-doctor {
+				font-size: 13px;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.touxiang {
+				border-radius: 30px;
+			}
+		</style>
+		<style type="text/css">
+			.AllDoctor_state_online {
+				font-size: 12px;
+				color: red;
+			}
+			
+			.AllDoctor_state_offline {
+				font-size: 12px;
+				color: silver;
+			}
+			
+			.main-doctor {
+				font-size: 13px;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.img {
+				height: 42px;
+				max-width: 42px;
+				border-radius: 21px;
+				margin-right: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id="patientName"></h1>
+		</header>
+		<div class="mui-content">
+
+			<ul class="mui-table-view mui-grid-view">
+				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="MyPatient-PatientDetails" onclick="electronicPrescribing()">
+					<a href="#">
+						<img src="../../img/prescription_128px_30474.png" class="img2" />
+						<div class="mui-media-body">电子处方</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="MyPatient-PatientDetails" onclick="medicalHhistory()">
+					<a href="#">
+						<img src="../../img/medical_report_256px_1081692.png" class="img2" />
+						<div class="mui-media-body">电子病历</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3 " id="MyPatient-PatientDetails" onclick="openMyPatient()">
+					<a href="#">
+						<img src="../../img/lungs_256px_1173426.png" class="img2" />
+						<div class="mui-media-body">患者信息</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-3 mui-col-sm-3" id="sendMeg" onclick="openSendMeg()">
+					<a href="#">
+						<img src="../../img/news_qunliao.png" class="img2" />
+						<div class="mui-media-body">发消息</div>
+					</a>
+				</li>
+			</ul>
+
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media" onclick="takeMedicine()">
+					<a href="#" class="mui-navigate-right">
+						<img class="mui-pull-left img" src="../../img/jar_medicine_128px_12884_easyicon.net.png">
+						<div class="mui-media-body">
+							服药记录
+							<br />
+							<span class="main-doctor" id="takeMedicineToday">今日</span>
+							<span class="main-doctor" id="takeMedicineMark">还未服药</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" onclick="makeAnAppointment()" id="nextExamination">
+					<a href="#" class="mui-navigate-right">
+						<img class="mui-pull-left img" src="../../img/self_item_symptoms_icon.png">
+						<div class="mui-media-body">
+							预约查看
+							<br />
+							<span class="main-doctor" id="nextExamination_date"></span>
+							<span class="main-doctor" id="nextExamination_examineType">无预约记录</span>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media ">
+					<!--<a href="#" class="mui-navigate-right">-->
+					<img class="mui-pull-left img" src="../../img/Medicine_1001px_1188479.png">
+					<div class="mui-media-body">
+						剩余药量
+						<br />
+						<span class="main-doctor" id="ResidualDrug">无记录</span>
+						<span class="main-doctor" id="ResidualDrugDay"></span>
+					</div>
+					<!--</a>-->
+				</li>
+			</ul>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		/*服药记录*/
+		function takeMedicine() {
+			mui.openWindow({
+				url: 'MyPatient-takeMedicine.html'
+			})
+		}
+		/*预约*/
+		function makeAnAppointment() {
+			mui.openWindow({
+				url: 'MyPatient-MakeAnAppointment.html'
+			})
+		}
+		/*电子处方*/
+		function electronicPrescribing() {
+			mui.openWindow({
+				url: 'MyPatient-ElectronicPrescribing.html'
+			})
+		}
+		/*电子病历*/
+		function medicalHhistory() {
+			mui.openWindow({
+				url: 'MyPatient-MedicalHhistory.html'
+			})
+		}
+//		/*患者个人信息*/
+//		function openMyPatient() {
+//			mui.openWindow({
+//				url: 'MyPatienPersondetails.html'
+//			})
+//		}
+		/*患者个人信息*/
+		function openMyPatient() {
+			mui.ajax(ajaxUrl + '/myPatient_getMyPatientMyData.action?patientID=' + patientID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) {
+
+					} else {
+						if(true==data[0]) {
+							mui.openWindow({
+								url: 'MyPatienPersondetails.html'
+							})
+						} else {
+							alert("患者还未开放个人信息");
+						}
+					}
+				}
+			});
+		}
+		//发消息
+		function openSendMeg() {
+			mui.openWindow({
+				url: '../Chat/ChatDetail.html'
+			})
+		}
+	</script>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+	<script type="text/javascript">
+		document.getElementById('patientName').innerText = localStorage.patientName;
+		var patientID = localStorage.patientID;
+		var doctorID = localStorage.doctorID;
+		//预约记录
+		mui.ajax(ajaxUrl + '/myPatient_getMyPatientDetail.action?doctorID=' + doctorID + "&" + "patientID=" + patientID, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			success: function(data) {
+				if(data.length == 0) {} else {
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById('nextExamination_date').innerText = data[n][0];
+						document.getElementById('nextExamination_examineType').innerText = data[n][1];
+					}
+				}
+			}
+		});
+		//剩余药量
+		mui.ajax(ajaxUrl + '/myPatient_getResidualDrug.action?patientID=' + patientID, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			success: function(data) {
+				if(data.length == 0) {} else {
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById('ResidualDrug').innerText = data[0];
+						document.getElementById('ResidualDrugDay').innerText = ' 天';
+					}
+				}
+			}
+		});
+		//服药记录
+		mui.ajax(ajaxUrl + '/myPatient_gettakeMedicineToday.action?patientID=' + patientID, {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'get', //HTTP请求类型
+			success: function(data) {
+				if(data.length == 0) {
+
+				} else {
+					for(var n = 0; n < data.length; n++) {
+						document.getElementById('takeMedicineMark').innerText = '已服药';
+					}
+				}
+			}
+		});
+	</script>
+
+</html>
+</body>
+
+</html>

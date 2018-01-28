@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.img2 {
+				max-width: 100%;
+				margin-top: 7px;
+			}
+			
+			.main-doctor {
+				font-size: 13px;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.touxiang {
+				border-radius: 30px;
+			}
+			
+			.AllDoctor_state_online {
+				font-size: 12px;
+				color: red;
+			}
+			
+			.AllDoctor_state_offline {
+				font-size: 12px;
+				color: silver;
+			}
+			
+			.main-doctor {
+				font-size: 13px;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.img {
+				height: 42px;
+				max-width: 42px;
+				border-radius: 21px;
+				margin-right: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">电子病历</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="createMedicalHistory()">新增病历</button>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<ul class="mui-table-view" id="MedicalHistory">
+			</ul>
+		</div>
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+
+			}
+			var patientID = localStorage.patientID;
+			var doctorID = localStorage.doctorID;
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					++count;
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					mui.ajax(ajaxUrl + '/myPatient_getMedicalHistory.action?patientID=' + patientID + '&flag=' + count, {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+								plus.nativeUI.toast("没有更多数据了！", {
+									duration: "short"
+								});
+							} else {
+								for(var n = 0; n < data.length; n++) {
+									var li = document.createElement("li");
+									li.setAttribute('class', 'mui-table-view-cell mui-media');
+									var a = document.createElement("a");
+									a.setAttribute('class', 'mui-navigate-right')
+									a.setAttribute('onclick', "openMedicalHistory(" + "'" + data[n][3] + "','" + n + "','" + data[n][0] + "')");
+									var div = document.createElement("div");
+									div.setAttribute('class', 'mui-media-body');
+									var span1 = document.createElement("span");
+									span1.setAttribute('class', 'main-doctor');
+									span1.innerText = '医生：';
+									var span2 = document.createElement("span");
+									span2.setAttribute('class', 'main-doctor');
+									span2.innerText = data[n][4];
+									var span3 = document.createElement("span");
+									span3.setAttribute('class', 'main-doctor mui-pull-right');
+									span3.innerText = data[n][1];
+									var br1 = document.createElement("br");
+									var span4 = document.createElement("span");
+									span4.setAttribute('class', 'main-doctor');
+									span4.innerText = data[n][2];
+									li.appendChild(a);
+									a.appendChild(div);
+									div.appendChild(span1);
+									div.appendChild(span2);
+									div.appendChild(span3);
+									div.appendChild(br1);
+									div.appendChild(span4);
+									document.getElementById('MedicalHistory').appendChild(li);
+								}
+							}
+						}
+					});
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+			
+			function createMedicalHistory() {
+				mui.openWindow({
+					url: 'MyPatient-MedicalHhistoryAdd.html',
+				})
+			}
+
+			function openMedicalHistory(doctorIDT, nT, medicalHistory_IdT) {
+				localStorage.medicalHistory_Id = medicalHistory_IdT;
+				if(nT == 0 && doctorID == doctorIDT) {
+					mui.openWindow({
+						url: 'MyPatient-MedicalHhistoryEdit.html',
+					})
+
+				} else { //查看
+					mui.openWindow({
+						url: 'MyPatient-MedicalHhistoryView.html',
+					})
+				}
+
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			.mui-switch.mui-active:before {
+				content: '是';
+			}
+			
+			.mui-switch:before {
+				content: '否';
+				color: #FFFFFF;
+			}
+			
+			.mui-switch {
+				background-color: #FF5053;
+				border: 1px solid #FF5053;
+				margin-bottom: 5px;
+			}
+			
+			.free {
+				display: inline-block;
+				margin-top: 4px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 0px;
+				width: 100px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 15px;
+			}
+			
+			.Add {
+				text-align: center;
+			}
+			
+			.pd {
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+			
+			.free1 {
+				display: inline-block;
+				float: right;
+				color: #4CD964
+			}
+			
+			.free0 {
+				display: inline-block;
+				float: right;
+				color: red;
+			}
+		</style>
+		<style type="text/css">
+			.mui-grid-view.mui-grid-9 {
+				background-color: white;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				height: 42px;
+				padding: 0px;
+				margin: 0px;
+				line-height: 0px;
+			}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				margin-top: 4px;
+			}
+			
+			.DoctorDetails_touxiang {
+				border-radius: 40px;
+			}
+			
+			.DoctorDetails_name2 {
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+				padding-left: 2px;
+			}
+			
+			.DoctorDetails_body2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-left: 2px;
+			}
+			
+			.DoctorDetails_top {
+				height: 150px;
+				padding-top: 35px;
+			}
+			
+			.DoctorDetails_name {
+				font-size: 17px;
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.DoctorDetails_title1 {
+				font-size: 14px;
+				display: block;
+				color: #8f8f94;
+				margin-top: 5px;
+			}
+			
+			.DoctorDetails_title2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-top: 3px;
+			}
+			
+			.mui-col-xs-4 {}
+			
+			.mui-col-xs-2 {
+				width: 20%
+			}
+			
+			#img {
+				height: 50px;
+				width: 70px;
+				padding-right: 10px;
+			}
+			
+			.zixun_span {
+				float: right;
+				font-size: 12px;
+				display: inline-block;
+				line-height: 13px;
+				color: #8f8f94;
+			}
+			
+			.zixun_span>span {
+				color: skyblue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+
+			<h1 class="mui-title">资讯</h1>
+		</header>
+		<div class="mui-content mui-scroll-wrapper" id="pullrefresh">
+			<ul class="mui-table-view mui-grid-view mui-grid-9" id="Ul">
+			</ul>
+
+			<ul class="mui-table-view" id="tiezi">
+			</ul>
+		</div>
+
+	</body>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+	<script src="../../js/mui.min.js"></script>
+	<script>
+		/*版块列表*/
+		mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_getAllCommPost.action', {
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			success: function(data) {
+				if(data.length == 0) //数据为空时什么都不执行  
+				{
+					//mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+//					plus.nativeUI.toast("没有更新内容！", {
+//						duration: "short"
+//					});
+				} else {
+					var str = "";
+					var obj = document.getElementById("Ul");
+					for(var i = 0; i < data.length; i++) {
+
+						str += "<li class=\"mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6\" style=\"width:" + 100 / data.length + "% ;\"  onclick=\"Post(" + data[i][0] + ")\" >" +
+							"					<a href=\"#\">" +
+							"						<div class=\"mui-media-body\">" + data[i][1] + "</div>" +
+							"					</a>\n" +
+							"				</li>";
+					}
+					obj.innerHTML = str;
+				}
+			}
+		});
+		
+
+		mui.init({
+			pullRefresh: {
+				container: '#pullrefresh',
+				down: {
+					callback: pulldownRefresh
+				},
+				up: {
+					contentrefresh: '正在加载...',
+					callback: pullupRefresh
+				}
+			}
+		});
+	
+		/**
+		 * 下拉刷新具体业务实现
+		 */
+		function pulldownRefresh() {
+			setTimeout(function() {
+				mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_getAllCommPost.action', {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{
+							mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+							plus.nativeUI.toast("没有更新内容！", {
+								duration: "short"
+							});
+						} else {
+							var str = "";
+							var obj = document.getElementById("Ul");
+							for(var i = 0; i < data.length; i++) {
+
+								str += "<li class=\"mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6\" style=\"width:" + 100 / data.length + "% ;\"  onclick=\"Post(" + data[i][0] + ")\">" +
+									"					<a href=\"#\">" +
+									"						<div class=\"mui-media-body\">" + data[i][1] + "</div>" +
+									"					</a>\n" +
+									"				</li>";
+							}
+							obj.innerHTML = str;
+						}
+					}
+				});
+				mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+			}, 1500);
+
+		}
+		var count = 0;
+		/**
+		 * 上拉加载具体业务实现
+		 */
+		function pullupRefresh() {
+			setTimeout(function() {
+
+				mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+				++count;
+				if(localStorage.postId != null) {
+					mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_getPostTopicById.action?id=' + localStorage.postId + '&flag=' + count, {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+								plus.nativeUI.toast("没有更新内容！", {
+									duration: "short"
+								});
+							} else {
+								var str = "";
+								var obj = document.getElementById("tiezi");
+								for(var i = 0; i < data.length; i++) {
+
+									str += "<li class=\"mui-table-view-cell\" onclick=\"details("+data[i][0]+");\">" +
+										"										<img class=\"mui-pull-left\" src=\""+imgPath+data[i][4]+"\" id=\"img\">" +
+										"										<div class=\"mui-media-body\">" +
+										"									    " + data[i][1] + "" +
+										"											<p class='mui-ellipsis'>" + data[i][2].replace(/<[^>]+>/g,"") + "</p>" +
+										"											<span class=\"zixun_span\">人气：<span>" + data[i][5] + "</span></span>" +
+										"										</div>" +
+										"									</li>";
+								}
+								obj.innerHTML += str;
+							}
+						}
+					});
+				}
+
+			}, 1500);
+		}
+		if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+		/*板块下的帖子*/
+		function Post(id) {
+			localStorage.postId = id;
+			document.getElementById("tiezi").innerHTML = '';
+			mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_getPostTopicById.action?id=' + localStorage.postId + '&flag=1', {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						mui('#pullrefresh').pullRefresh().refresh(true);
+						//mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+						plus.nativeUI.toast("没有更新内容！", {
+							duration: "short"
+						});
+					} else {
+						var str = "";
+						var obj = document.getElementById("tiezi");
+						for(var i = 0; i < data.length; i++) {
+
+							str += "<li class=\"mui-table-view-cell\" onclick=\"details("+data[i][0]+");\">" +
+								"										<img class=\"mui-pull-left\" src=\""+imgPath+data[i][4]+"\" id=\"img\">" +
+								"										<div class=\"mui-media-body\">" +
+								"									    " + data[i][1] + "" +
+								"											<p class='mui-ellipsis'>" + data[i][2].replace(/<[^>]+>/g,"") + "</p>" +
+								"											<span class=\"zixun_span\">人气：<span>" + data[i][5] + "</span></span>" +
+								"										</div>" +
+								"									</li>";
+						}
+						obj.innerHTML = str;
+					}
+				}
+			});
+		}
+
+		function details(id) {
+			localStorage.tieziId=id;
+			mui.openWindow({
+				url: 'InformationDetails.html',
+				id: 'InformationDetails.html'
+			});
+		}
+	</script>
+
+</html>

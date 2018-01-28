@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style>
+			.div_pl {
+				height: 20px;
+				width: 120px;
+				float: right;
+				position: absolute;
+				right: 0;
+				bottom: 9px;
+			}
+			
+			.div_pl img {
+				max-width: 15px;
+			}
+			
+			.HealthyCircle_pl {
+				display: inline-block;
+				width: 30px;
+				font-size: 13px;
+				padding-bottom: 1px;
+			}
+		</style>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.touxiang {
+				border-radius: 40px;
+			}
+			
+			.InformationDetails_title {
+				font-size: 17px;
+				display: block;
+				padding-top: 18px;
+			}
+			
+			.InformationDetails_date {
+				font-size: 12px;
+				color: #8f8f94;
+				padding-top: 5px;
+			}
+			
+			.InformationDetails_body {
+				font-size: 14px;
+				color: #8f8f94;
+				margin-top: 12px;
+			}
+			
+			.height {
+				height: 35px;
+				max-width: 35px;
+				margin-right: 2px;
+			}
+			
+			.UploadDetails_name2 {
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+				padding-left: 2px;
+			}
+			
+			.UploadDetails_body2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-left: 2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">详情</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<span class="InformationDetails_title" id="title"></span>
+						<span class="InformationDetails_date" id="time"></span>
+					</div>
+				</li>
+			</ul>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<span class="InformationDetails_body" id="content">
+						</span>
+					</div>
+				</li>
+				<br />
+				<hr />
+				<div class="div_pl">
+					<img src="../../img/yszy_hpl.png" onclick="dianzan();" id="dzImg" />
+					<span class="HealthyCircle_pl" id="DZ">100</span>
+					<img src="../../img/yszy_hds.png" onclick="hf();"/>
+					<span class="HealthyCircle_pl" id="hf">100</span>
+				</div>
+			</ul>
+
+		</div>
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script>
+			mui.init();
+			/*获取帖子详情*/
+			mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_getTopicById.action?id=' + localStorage.tieziId, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+
+					} else {
+
+						document.getElementById("title").innerHTML = data[0][1];
+						document.getElementById("time").innerHTML = data[0][6];
+						document.getElementById("content").innerHTML = data[0][3];
+						document.getElementById("DZ").innerHTML = data[0][5];
+						document.getElementById("hf").innerHTML = data[0][4];
+						localStorage.hf=data[0][4];
+					}
+				}
+			});
+			/**/
+			
+			mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_islikeDoctor.action?id=' + localStorage.tieziId + '&doctorID=' + localStorage.doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						console.log("无数据");
+					} else {
+						if(data == 0) {
+							var dz = document.getElementById("dzImg");
+							dz.src = '../../img/yszy_hpl.png';
+							dz.setAttribute("onclick", "dianzan()");
+						} else {
+							var dz = document.getElementById("dzImg");
+							dz.src = '../../img/yszy_hpl_2.png';
+							dz.setAttribute("onclick", "Undianzan()");
+						}
+					}
+				}
+			});
+			/*点赞*/
+			function dianzan() {
+				mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_likeDoctor.action?id=' + localStorage.tieziId + '&doctorID=' + localStorage.doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{
+							console.log("无数据");
+						} else {
+							if(data == 0) {
+
+							} else {
+								var dz = document.getElementById("dzImg");
+								dz.src = '../../img/yszy_hpl_2.png';
+								dz.setAttribute("onclick", "Undianzan()");
+								var dzNum = document.getElementById("DZ");
+								dzNum = dzNum.innerHTML;
+								document.getElementById("DZ").innerHTML = Number(dzNum) + 1;
+							}
+						}
+					}
+				});
+
+			}
+			/*取消赞*/
+			function Undianzan() {
+				mui.ajax(ajaxUrl + '/patientAPP/CommTopicAPP_UnLikeDoctor.action?id=' + localStorage.tieziId + '&doctorID=' + localStorage.doctorID, {
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					success: function(data) {
+						if(data.length == 0) //数据为空时什么都不执行  
+						{
+							console.log("无数据");
+						} else {
+							if(data == 0) {
+
+							} else {
+								var dz = document.getElementById("dzImg");
+								dz.src = '../../img/yszy_hpl.png';
+								dz.setAttribute("onclick", "dianzan()");
+								var dzNum = document.getElementById("DZ");
+								dzNum = dzNum.innerHTML;
+								document.getElementById("DZ").innerHTML = Number(dzNum) - 1;
+							}
+						}
+					}
+				});
+
+			}
+			/*回复*/
+			function hf(){
+				mui.openWindow({
+					url:'UploadDetails.html',
+					id:'UploadDetails.html'
+				});
+			}
+		</script>
+	</body>
+
+</html>

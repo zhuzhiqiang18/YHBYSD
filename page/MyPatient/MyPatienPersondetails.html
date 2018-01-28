@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<script src="../../js/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/common.js"></script>
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style>
+			.mui-ellipsis {
+				color: #6D6D72;
+			}
+			
+			.touxiang {
+				border-radius: 40px;
+			}
+			
+			.DoctorDetails_name {
+				font-size: 17px;
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.DoctorDetails_title1 {
+				font-size: 14px;
+				display: block;
+				color: #8f8f94;
+				margin-top: 5px;
+			}
+			
+			.DoctorDetails_title2 {
+				font-size: 13px;
+				display: inline-block;
+				color: #8f8f94;
+				margin-top: 3px;
+				border: 1px solid #6D6D72;
+				border-radius: 15px;
+				padding-left: 1px;
+				padding-right: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">患者资料</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view mui-table-view-chevron" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media" style="height: 70px;padding-top: 10px;" onclick="showActionSheet();">
+					<a >
+						<img class="mui-media-object mui-pull-left touxiang" src="" id="imgPath" style="height: 50px;max-width:50px;">
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a  id="qr">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>二维码</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+
+			<!--<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell mui-media">
+					<a class="mui-navigate-right" id="Myself-Money">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>730个健康点，4个未完成任务</p>
+						</div>
+					</a>
+				</li>
+			</ul>-->
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="name">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="nameText">姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="sex">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="sexText">性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="dateOfBirth">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="dateOfBirthText">生日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="phone">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="phoneText">手机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="email">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="emailText">邮箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="nation">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="nationText">民族&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="job">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="jobText">职业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="jobAddress">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="jobAddressText">单位（学校）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="address">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="addressText">住址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="postalCode">
+					<a >
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="postalCodeText">邮编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+
+			</ul>
+			<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+				<li class="mui-table-view-cell mui-media" id="code">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="codeText">登记号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media" id="bingAnCode">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="bingAnCodeText">病案号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<!--<li class="mui-table-view-cell mui-media">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>督导单位&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+
+				<li class="mui-table-view-cell mui-media">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>督导医生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>-->
+				<!--<li class="mui-table-view-cell mui-media" id="findingsName">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="findingsNameText">患者类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>-->
+				<li class="mui-table-view-cell mui-media" id="startDate">
+					<a class="">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis' id="startDateText">开始治疗时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>
+				<!--<li class="mui-table-view-cell mui-media" id="updatePassword">
+					<a class="mui-navigate-right">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>修改登录密码&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+						</div>
+					</a>
+				</li>-->
+			</ul>
+			</ul>
+		</div>
+
+		<script type="text/javascript">
+			document.getElementById('qr').addEventListener('tap', function() {
+				//打开关于页面
+				mui.openWindow({
+					url: 'Myself-QRCode.html',
+					id: 'Myself-QRCode.html',
+				});
+			});
+		</script>
+
+		<!--ajax-->
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+			mui.ajax(ajaxUrl + '/patientAPP/patientAPP_getPatientDetailViewByDoctor.action?patientID=' + localStorage.patientID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						plus.nativeUI.toast("服务器异常！", {
+							duration: "short"
+						});
+					} else {
+						/*保存登录者信息*/
+						localStorage.patientId = data[0][0]; //id
+
+						document.getElementById("nameText").innerHTML = '姓名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][1];
+						document.getElementById("sexText").innerHTML = '性别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][4];
+						document.getElementById("dateOfBirthText").innerHTML = '生日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][5];
+						document.getElementById("phoneText").innerHTML = '手机&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][6];
+						document.getElementById("emailText").innerHTML = '邮箱&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][7];
+						document.getElementById("nationText").innerHTML = '民族&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][8];
+						document.getElementById("jobText").innerHTML = '职业&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][9];
+						document.getElementById("jobAddressText").innerHTML = '单位（学校）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][10];
+						document.getElementById("addressText").innerHTML = '住址&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][11];
+						document.getElementById("postalCodeText").innerHTML = '邮编&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][12];
+						document.getElementById("codeText").innerHTML = '登记号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][13];
+						document.getElementById("bingAnCodeText").innerHTML = '病案号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][14];
+//						document.getElementById("findingsNameText").innerHTML = '患者类型&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][22];
+						document.getElementById("startDateText").innerHTML = '开始治疗时间&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + data[0][15];
+						var fe = document.getElementById("imgPath");
+						fe.src = imgPath + data[0][2];
+						localStorage.patientImgPath = imgPath + data[0][2];
+						localStorage.patientusename=data[0][3]
+
+
+					}
+				}
+			});
+		</script>
+
+	</body>
+
+</html>

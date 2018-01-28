@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			#show {
+				border: 1px solid red;
+				height: 600px;
+				overflow: scroll;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="show">
+			<!--<ul>
+				<li>我是第一条</li>
+				<li>我是第二条</li>
+				<li>我是第三条</li>
+			</ul>-->
+		</div>
+		用户名:<input type="" name="inputName" id="inputName" value="" />
+		<input type="text" name="inputText" id="inputText" value="" />
+		<button id="sendBtn">发送</button>
+	</body>
+</html>
+<script src="chatConnect.js"></script>
+<script>
+	//发送消息
+	sendBtn.onclick = function () {
+//		console.log("gag");
+		//调用sendMsg.php文件
+		//把name和message传给该文件
+		//并且通过post方式
+		var myUrl = "sendMsg.php";
+		var  massage = inputText.value;
+		var xm = document.getElementById("inputName").value;
+		var myParams = "name" + xm + "&massage=" + massage;
+		myRequest("post" , myUrl , myParams , function (res) {
+			console.log(res);
+		});
+	}
+	
+	//dingshiqi  获得消息
+	setInterval(function () {
+		myRequest("get" , "receiveMsg.php", "" ,function(res) {
+//			console.log(res);
+//		show.appendChild(res);
+		show.innerHTML = res;
+		show.scrollTop = show.scrollHeight;
+		});
+	}, 500);
+	
+//	基本思路  html文件输入内容   连接sendMsg.php   sendMsg.php连接  chat
+	
+	
+
+	
+	
+	
+</script>

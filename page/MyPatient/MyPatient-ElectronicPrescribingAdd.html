@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			.mui-switch.mui-active:before {
+				content: '是';
+			}
+			
+			.mui-switch:before {
+				content: '否';
+				color: #FFFFFF;
+			}
+			
+			.mui-switch {
+				background-color: #FF5053;
+				border: 1px solid #FF5053;
+				margin-bottom: 5px;
+			}
+			
+			.free {
+				display: inline-block;
+				margin-top: 4px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 0px;
+				width: 100px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 15px;
+			}
+			
+			.Add {
+				text-align: center;
+			}
+			
+			.pd {
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+			
+			.free1 {
+				display: inline-block;
+				float: right;
+				color: #4CD964
+			}
+			
+			.free0 {
+				display: inline-block;
+				float: right;
+				color: red;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">电子处方</h1>
+			<button class="mui-btn mui-btn-blue mui-btn-link mui-pull-right" onclick="savePrescribe()">保存</button>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view" style="margin: 0;">
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<span class="AskPerson">药量天数(天)：</span>
+						<input class="mui-numbox-input" type="number" id="drugOfDays" />
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-media pd">
+					<a href="#">
+						<div class="mui-media-body">
+							<span>选择开始服药时间：</span>
+							<span id='StartTakeMedicineDate'></span>
+							<button id='StartTakeMedicineDate1' data-options='{}' class="btn mui-btn mui-btn-block mui-pull-right">选择</button>
+						</div>
+					</a>
+				</li>
+				<!--<li class="mui-table-view-cell mui-media pd">
+					<a href="#">
+						<div class="mui-media-body">
+							<span>选择开始服药时间：</span>
+							<span id='endTakeMedicineDate'></span>
+							<button id='endTakeMedicineDate1' data-options='{}' class="btn mui-btn mui-btn-block mui-pull-right">选择</button>
+						</div>
+					</a>
+				</li>-->
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<span class="AskPerson">备注：</span>
+						<div class="mui-input-row" style="margin: 10px 5px;margin-bottom: 0;">
+							<textarea id="e_prescribingTxt" rows="5" placeholder="备注信息"></textarea>
+						</div>
+					</div>
+				</li>
+			</ul>
+			<ul>
+				<a onclick="addDrugDetial()">添加药品 </a>
+			</ul>
+			<div id="drugDetail">
+				<!--<ul class="mui-table-view mui-table-view-chevron" style="margin-top: 10px;">
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>药品名称：<input class="" name="drugName" /></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>药品规格：<input class="" name="drugSpecifications" /></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>药品数量：<input class="" name="drugNumber" /></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>每天用药次数：<input type="number" name="takeMedicineTimes" /></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>每天用药剂量：<input class="" name="drugDose" /></p>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<div class="mui-media-body">
+							<p class='mui-ellipsis'>用药方式：<input class="" name="takeMedicineManner" /></p>
+						</div>
+					</li>
+
+				</ul>-->
+		</div>
+		<div id='result' class="ui-alert"></div>
+	</body>
+	<!--日期选择-->
+	<script src="../../js/mui.picker.min.js"></script>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+	<script>
+		(function($) {
+			$.init();
+			var result = $('#StartTakeMedicineDate')[0];
+			var btns = $('#StartTakeMedicineDate1');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var id = this.getAttribute('id');
+					/*
+					 * 首次显示时实例化组件
+					 * 示例为了简洁，将 options 放在了按钮的 dom 上
+					 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+					 */
+					/*var picker = new $.DtPicker(options);*/
+					var picker = new mui.DtPicker({
+						"type": "date"
+					})
+					picker.show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						result.innerText = rs.text;
+					});
+				}, false);
+			});
+		})(mui);
+		(function($) {
+			$.init();
+			var result = $('#endTakeMedicineDate')[0];
+			var btns = $('#endTakeMedicineDate1');
+			btns.each(function(i, btn) {
+				btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var id = this.getAttribute('id');
+					/*
+					 * 首次显示时实例化组件
+					 * 示例为了简洁，将 options 放在了按钮的 dom 上
+					 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+					 */
+					/*var picker = new $.DtPicker(options);*/
+					var picker = new mui.DtPicker({
+						"type": "date"
+					})
+					picker.show(function(rs) {
+						/*
+						 * rs.value 拼合后的 value
+						 * rs.text 拼合后的 text
+						 * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+						 * rs.m 月，用法同年
+						 * rs.d 日，用法同年
+						 * rs.h 时，用法同年
+						 * rs.i 分（minutes 的第二个字母），用法同年
+						 */
+						result.innerText = rs.text;
+					});
+				}, false);
+			});
+		})(mui);
+		/*保存处方*/
+		function savePrescribe() {
+			var patientID = localStorage.patientID;
+			var doctorID = localStorage.doctorID;
+			var StartTakeMedicineDate = document.getElementById('StartTakeMedicineDate').innerText;
+			//			var endTakeMedicineDate = document.getElementById('endTakeMedicineDate').innerText;
+			var drugOfDays = document.getElementById('drugOfDays').value;
+			var e_prescribingTxt = document.getElementById('e_prescribingTxt').value;
+			
+			var drugName = [];
+			for(var n = 0; n < document.getElementsByName("drugName").length; n++) {
+				drugName[n] = document.getElementsByName("drugName")[n].value;
+			}
+			var drugSpecifications = [];
+			for(var n = 0; n < document.getElementsByName("drugSpecifications").length; n++) {
+				drugSpecifications[n] = document.getElementsByName("drugSpecifications")[n].value;
+			}
+			var drugNumber = [];
+			for(var n = 0; n < document.getElementsByName("drugNumber").length; n++) {
+				drugNumber[n] = document.getElementsByName("drugNumber")[n].value;
+			}
+			var takeMedicineTimes = [];
+			for(var n = 0; n < document.getElementsByName("takeMedicineTimes").length; n++) {
+				takeMedicineTimes[n] = document.getElementsByName("takeMedicineTimes")[n].value;
+			}
+			var drugDose = [];
+			for(var n = 0; n < document.getElementsByName("drugDose").length; n++) {
+				drugDose[n] = document.getElementsByName("drugDose")[n].value;
+			}
+			var takeMedicineManner = [];
+			for(var n = 0; n < document.getElementsByName("takeMedicineManner").length; n++) {
+				takeMedicineManner[n] = document.getElementsByName("takeMedicineManner")[n].value;
+			}
+			
+
+			mui.ajax(ajaxUrl + '/myPatient_savePrescribe.action?doctorID=' + doctorID + "&" + "patientID=" + patientID + "&" + "StartTakeMedicineDate=" + StartTakeMedicineDate + "&" + "drugName=" + drugName + "&" + "takeMedicineManner=" + takeMedicineManner + "&" + "drugSpecifications=" + drugSpecifications + "&" + "drugNumber=" + drugNumber + "&" + "takeMedicineTimes=" + takeMedicineTimes + "&" + "drugDose=" + drugDose + "&" + "drugOfDays=" + drugOfDays + "&" + "e_prescribingTxt=" + e_prescribingTxt, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'get', //HTTP请求类型
+				success: function(data) {
+					mui.openWindow({
+						url: 'MyPatient-ElectronicPrescribing.html',
+						id: 'MyPatient-ElectronicPrescribing.html'
+					});
+					plus.webview.getWebviewById('MyPatient-ElectronicPrescribing.html').reload();
+				}
+			});
+
+		}
+//---------------------------------------------------------------------
+		function addDrugDetial() {
+//			alert("添加一行");
+			var str="<ul class=\"mui-table-view mui-table-view-chevron\" style=\"margin-top: 10px;\">\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >药品名称：<input class=\"\" name=\"drugName\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >药品规格：<input class=\"\" name=\"drugSpecifications\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >药品数量：<input class=\"\" name=\"drugNumber\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >每天用药次数：<input type=\"number\" name=\"takeMedicineTimes\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >每天用药剂量：<input class=\"\" name=\"drugDose\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"				<li class=\"mui-table-view-cell mui-media\">\n" +
+"					<div class=\"mui-media-body\">\n" +
+"						<p class='mui-ellipsis' >用药方式：<input class=\"\" name=\"takeMedicineManner\"/></p>\n" +
+"					</div>\n" +
+"				</li>\n" +
+"			</ul>";
+//			document.getElementById('drugDetail').append(str);
+			document.getElementById("drugDetail").innerHTML=document.getElementById("drugDetail").innerHTML+str;
+		}
+	</script>
+
+</html>

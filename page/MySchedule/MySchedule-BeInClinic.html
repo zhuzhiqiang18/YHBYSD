@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.min.css" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			* {
+				font-family: "微软雅黑";
+			}
+			
+			.mui-switch.mui-active:before {
+				content: '是';
+			}
+			
+			.mui-switch:before {
+				content: '否';
+				color: #FFFFFF;
+			}
+			
+			.mui-switch {
+				background-color: #FF5053;
+				border: 1px solid #FF5053;
+				margin-bottom: 5px;
+			}
+			
+			.free {
+				display: inline-block;
+				margin-top: 4px;
+			}
+			
+			.mui-btn {
+				font-size: 16px;
+				padding: 0px;
+				width: 100px;
+			}
+			
+			.ui-alert {
+				text-align: center;
+				padding: 20px 10px;
+				font-size: 16px;
+			}
+			
+			.mui-ellipsis {
+				font-size: 15px;
+			}
+			
+			.Add {
+				text-align: center;
+			}
+			
+			.pd {
+				padding-top: 10px;
+				padding-bottom: 5px;
+			}
+			
+			.free1 {
+				display: inline-block;
+				float: right;
+				color: #4CD964
+			}
+			
+			.free0 {
+				display: inline-block;
+				float: right;
+				color: red;
+			}
+		</style>
+		<style type="text/css">
+			.mui-grid-view.mui-grid-9 {
+				background-color: white;
+			}
+			
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				height: 42px;
+				padding: 0px;
+				margin: 0px;
+				line-height: 0px;
+			}
+			
+			.mui-table-view.mui-grid-view .mui-table-view-cell .mui-media-body {
+				margin-top: 4px;
+			}
+			
+			.DoctorDetails_touxiang {
+				border-radius: 40px;
+			}
+			
+			.DoctorDetails_name2 {
+				font-size: 14px;
+				display: block;
+				line-height: 18px;
+				padding-left: 2px;
+			}
+			
+			.DoctorDetails_body2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-left: 2px;
+			}
+			
+			.DoctorDetails_top {
+				height: 150px;
+				padding-top: 35px;
+			}
+			
+			.DoctorDetails_name {
+				font-size: 17px;
+				display: block;
+				padding-top: 5px;
+			}
+			
+			.DoctorDetails_title1 {
+				font-size: 14px;
+				display: block;
+				color: #8f8f94;
+				margin-top: 5px;
+			}
+			
+			.DoctorDetails_title2 {
+				font-size: 12px;
+				display: block;
+				color: #8f8f94;
+				padding-top: 3px;
+			}
+			
+			.mui-col-xs-4 {
+				width: 40%
+			}
+			.mui-col-xs-2 {
+				width: 20%
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">坐诊管理</h1>
+			<button onclick="openAdd()" class="mui-btn mui-btn-blue mui-btn-link mui-pull-right">新增坐诊</button>
+		</header>
+		<div class="mui-content"  id="pullrefresh">
+			<br />
+			<!--<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<div class="mui-media-body">
+						<p class='mui-ellipsis'>坐诊安排(左滑删除)</p>
+					</div>
+				</li>
+			</ul>-->
+			<ul class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6">
+					<a href="#">
+						<div class="mui-media-body">日期</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6">
+					<a href="#">
+						<div class="mui-media-body">社康</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-2 mui-col-sm-6">
+					<a href="#">
+						<div class="mui-media-body">预约人数</div>
+					</a>
+				</li>
+			</ul>
+			<ul class="mui-table-view mui-grid-view mui-grid-9" id="getBeInClinic">
+			</ul>
+			
+		</div>
+
+	</body>
+	<script>
+		mui.init();
+		(function($) {
+			$('#OA_task_1').on('tap', '.mui-btn', function(event) {
+				var elem = this;
+				var li = elem.parentNode.parentNode;
+				mui.confirm('确认删除该条记录？', '确认删除', btnArray, function(e) {
+					if(e.index == 0) {
+						li.parentNode.removeChild(li);
+					} else {
+						setTimeout(function() {
+							$.swipeoutClose(li);
+						}, 0);
+					}
+				});
+			});
+			var btnArray = ['确认', '取消'];
+		})(mui);
+	</script>
+	<script type="text/javascript">
+		function openAdd() {
+			mui.openWindow({
+				url: 'MySchedule-BeInClinicAdd.html'
+			});
+		}
+	</script>
+	<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+
+			}
+			var doctorID = localStorage.doctorID;
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					++count;
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh();
+					mui.ajax(ajaxUrl + '/schedule_getBeInClinicFromMobile.action?doctorID=' + doctorID + '&flag=' + count, {
+						dataType: 'json', //服务器返回json格式数据
+						type: 'post', //HTTP请求类型
+						success: function(data) {
+							if(data.length == 0) //数据为空时什么都不执行  
+							{
+								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+								plus.nativeUI.toast("没有更多数据了！", {
+									duration: "short"
+								});
+							} else {
+								var str="";
+								var obj = document.getElementById("getBeInClinic");
+								for(var n = 0; n < data.length; n++) {
+									str=str+
+										"<li class=\"mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6\">"+
+										"<a href=\"#\">"+
+										"<div class=\"mui-media-body\">"+
+										data[n][1]+
+										"</div>"+
+										"</a>"+
+										"</li>"+
+										"<li class=\"mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-6\">"+
+										"<a href=\"#\">"+
+										"<div class=\"mui-media-body\">"+
+										data[n][2]+
+										"</div>"+
+										"</a>"+
+										"</li>"+
+										"<li class=\"mui-table-view-cell mui-media mui-col-xs-2 mui-col-sm-6\">"+
+										"<a href=\"#\">"+
+										"<div class=\"mui-media-body\">"+
+										data[n][3]+
+										"</div>"+
+										"</a>"+
+										"</li>"
+								}
+								obj.innerHTML = obj.innerHTML + str;
+							}
+						}
+					});
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+			function openMyPatient(patientID, patientName) {
+				localStorage.patientID = patientID;
+				localStorage.patientName = patientName
+				mui.openWindow({
+					url: 'MyPatientDetail.html',
+				})
+			}
+		</script>
+
+</html>

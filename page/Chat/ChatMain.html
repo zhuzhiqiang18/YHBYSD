@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<script type="text/javascript" charset="UTF-8">
+			mui.init();
+		</script>
+		<style type="text/css">
+			.img2 {
+				height: 80px;
+				margin-top: 7px;
+			}
+			
+			.main-doctor {
+				font-size: 13px;
+				line-height: 23px;
+				color: #8f8f94;
+			}
+			
+			.touxiang {
+				border-radius: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<!--<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>-->
+			<h1 class="mui-title">消息列表</h1>
+		</header>
+		<div class="mui-content" id="pullrefresh">
+			<!--<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media" id="Chat">
+					<a href="#">
+						<img class="mui-media-object mui-pull-left touxiang" src="../../images/yuantiao.jpg">
+						<div class="mui-media-body">
+							<span id="">Ellis</span>
+							<p class='mui-pull-right'>2016-01-21</p>
+							<p class='mui-ellipsis'>
+								<span class="mui-badge mui-badge-danger mui-pull-right">5</span>
+							</p>
+						</div>
+					</a>
+				</li>
+			</ul>-->
+			<ul class="mui-table-view" id="chatul">
+			</ul>
+		</div>
+
+		<!--初始化自动获取消息列表from服务器 有消息有这个人修改消息数量  有消息每个这个本地创建在写入消息数量-->
+		<script type="text/javascript" src="../../js/ServiceUrl.js"></script>
+		<!--医生获取聊天列表-->
+		<script type="text/javascript">
+			/**
+			 * 打开数据库
+			 */
+			var db = openDatabase('fjhDB', '1.0', 'fjhDB', 2 * 1024 * 1024);
+			db.transaction(function(context) {
+				/**
+				 * 判断数据了是否存在 不存在则创建
+				 */
+				context.executeSql('CREATE TABLE IF NOT EXISTS chatListTable (id unique,patientId,patientName,patientImgPath,messageNo,messageTime)', [], function(tx, result) {
+						//alert('创建chatListTable表成功');
+					},
+					function(tx, error) {
+						//	alert('创建chatListTable表失败:' + error.message);
+					});
+			});
+			var doctorID = localStorage.doctorID;
+			mui.ajax(ajaxUrl + '/chat_getChatList.action?receiveId=D' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						//								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+						//								plus.nativeUI.toast("没有更多数据了！", {
+						//									duration: "short"
+						//								});
+					} else {
+						for(var n = 0; n < data.length; n++) {
+							var datan0 = data[n][0];
+							var datan1 = data[n][1];
+							var datan2 = data[n][2];
+							var datan3 = data[n][3];
+							var datan4 = data[n][4];
+							/**
+							 * 打开数据库
+							 */
+							db.transaction(function(context) {
+								context.executeSql('SELECT * FROM chatListTable where patientId=?', [datan0],
+									function(tx, result2) {
+										if(result2.rows.length > 0) {
+//											console.log("youzhi");
+											context.executeSql('UPDATE chatListTable SET messageNo=?,messageTime=?  where patientId=?', [datan4, datan3, datan0]);
+										} else {
+											context.executeSql('select max(id) mid from chatListTable', [],
+												/**
+												 * 执行成功
+												 * @param {Object} tx
+												 * @param {Object} result
+												 */
+												function(tx, result) {
+													var id = (result.rows.item(0).mid) ? result.rows.item(0).mid : 0;
+													context.executeSql('INSERT INTO chatListTable (id,patientId,patientName,patientImgPath,messageNo,messageTime) VALUES (?,?,?,?,?,?)', [(id + 1), datan0, datan1, datan2, datan4, datan3],
+														function(tx, result) {
+															console.log("成功插入数据");
+														},
+														function(tx, error) {
+															console.log("插入数据失败");
+														}
+													);
+												},
+												/**
+												 * 执行失败
+												 * @param {Object} tx
+												 * @param {Object} error
+												 */
+												function(tx, error) {
+													console.log("查询最大Id值失败");
+												}
+											);
+										}
+									}
+								)
+
+							})
+						}
+						/*生成聊天列表*/
+						traversalChatMain();
+					}
+				}
+			});
+//			traversalChatMain();
+			/*			开始往页面塞值*/
+			function traversalChatMain(){
+			/**
+			 * 打开数据库
+			 */
+//			console.log("打开数据库");
+			db.transaction(function(context3) {
+					context3.executeSql('SELECT * FROM chatListTable',[],
+						function(tx, result3) {
+							if(result3.rows.length > 0) {
+								var str = "";
+								var obj = document.getElementById("chatul");
+								for(var i = 0; i < result3.rows.length; i++) {
+									/*console.log(result3.rows.item(i).patientImgPath);*/
+									str = str +
+										"<li class=\"mui-table-view-cell mui-media\">"+
+										"<a href=\"#\"   onclick=\"openChatDetail("+result3.rows.item(i).patientId+",'"+result3.rows.item(i).patientName+"','"+result3.rows.item(i).patientImgPath+"')\">"+
+										"<img class=\"mui-media-object mui-pull-left touxiang\" src=\""+imgPath+result3.rows.item(i).patientImgPath+"\">"+
+										"<div class=\"mui-media-body\">"+
+										"<span id=\"\">"+result3.rows.item(i).patientName+"</span>"+
+										"<p class=\"mui-pull-right\">"+result3.rows.item(i).messageTime+"</p>"+
+										"<p class=\"mui-ellipsis\">"+
+										"<span class=\"mui-badge mui-badge-danger mui-pull-right\">"+result3.rows.item(i).messageNo+"</span>"+
+										"</p>"+
+										"</div>"+
+										"</a>"+
+										"</li>"
+								}
+								obj.innerHTML =  str;
+								
+							} else {}
+						}
+					)
+
+			});
+			};
+			/*打开聊天页面*/
+			function openChatDetail(patientIdT,patientName,patientImgPathT){
+				localStorage.patientID=patientIdT;
+				localStorage.patientName=patientName;
+				localStorage.patientImgPath=patientImgPathT;
+				db.transaction(function(context) {
+					context.executeSql('UPDATE chatListTable SET messageNo=0 where patientId=?', [patientIdT]);
+				});
+				mui.openWindow({
+						url: 'ChatDetail.html'
+//						id: 'MySchedule-BeInClinic.html'
+					})
+			}
+		</script>
+		<!--下拉刷新-->
+		<script>
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					/**
+			 * 打开数据库
+			 */
+			var db = openDatabase('fjhDB', '1.0', 'fjhDB', 2 * 1024 * 1024);
+			db.transaction(function(context) {
+				/**
+				 * 判断数据了是否存在 不存在则创建
+				 */
+				context.executeSql('CREATE TABLE IF NOT EXISTS chatListTable (id unique,patientId,patientName,patientImgPath,messageNo,messageTime)', [], function(tx, result) {
+						//alert('创建chatListTable表成功');
+					},
+					function(tx, error) {
+						//	alert('创建chatListTable表失败:' + error.message);
+					});
+			});
+			var doctorID = localStorage.doctorID;
+			mui.ajax(ajaxUrl + '/chat_getChatList.action?receiveId=D' + doctorID, {
+				dataType: 'json', //服务器返回json格式数据
+				type: 'post', //HTTP请求类型
+				success: function(data) {
+					if(data.length == 0) //数据为空时什么都不执行  
+					{
+						//								mui('#pullrefresh').pullRefresh().endPullupToRefresh(true); //没有数据阻止访问服务器
+						//								plus.nativeUI.toast("没有更多数据了！", {
+						//									duration: "short"
+						//								});
+					} else {
+						for(var n = 0; n < data.length; n++) {
+							var datan0 = data[n][0];
+							var datan1 = data[n][1];
+							var datan2 = data[n][2];
+							var datan3 = data[n][3];
+							var datan4 = data[n][4];
+							/**
+							 * 打开数据库
+							 */
+							db.transaction(function(context) {
+								context.executeSql('SELECT * FROM chatListTable where patientId=?', [datan0],
+									function(tx, result2) {
+										if(result2.rows.length > 0) {
+//											console.log("youzhi");
+											context.executeSql('UPDATE chatListTable SET messageNo=?,messageTime=?  where patientId=?', [datan4, datan3, datan0]);
+										} else {
+											console.log("meizhi");
+											context.executeSql('select max(id) mid from chatListTable', [],
+												/**
+												 * 执行成功
+												 * @param {Object} tx
+												 * @param {Object} result
+												 */
+												function(tx, result) {
+													var id = (result.rows.item(0).mid) ? result.rows.item(0).mid : 0;
+													context.executeSql('INSERT INTO chatListTable (id,patientId,patientName,patientImgPath,messageNo,messageTime) VALUES (?,?,?,?,?,?)', [(id + 1), datan0, datan1, datan2, datan4, datan3],
+														function(tx, result) {
+															console.log("成功插入数据");
+														},
+														function(tx, error) {
+															console.log("插入数据失败");
+														}
+													);
+												},
+												/**
+												 * 执行失败
+												 * @param {Object} tx
+												 * @param {Object} error
+												 */
+												function(tx, error) {
+													console.log("查询最大Id值失败");
+												}
+											);
+										}
+									}
+								)
+
+							})
+						}
+						/*生成聊天列表*/
+						traversalChatMain();
+					}
+				}
+			});
+					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 300);
+			}
+			var count = 0;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+					document.getElementById('username').innerHTML = localStorage.doctorName;
+					document.getElementById('usercode').innerHTML = localStorage.code;
+					document.getElementById("imgPath").src = localStorage.doctorImgPath;
+
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 10);
+
+				});
+			}
+		</script>
+
+	</body>
+
+</html>
